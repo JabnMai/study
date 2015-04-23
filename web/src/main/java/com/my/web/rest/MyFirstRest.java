@@ -19,14 +19,13 @@ public class MyFirstRest {
 	   
 	        request.setAttribute("name","helloworld");
 	        request.setAttribute("id", proId);
-	         
 	        return "products/list";
 	         
 	    }
-	 @RequestMapping(value="/info",method=RequestMethod.POST)
-	    public String getProductsInfo(@RequestParam String pid,HttpServletRequest request,HttpServletResponse response) throws Exception {
+	 @RequestMapping(value="/info",method=RequestMethod.GET)
+	    public String getProductsInfo(HttpServletRequest request,HttpServletResponse response) throws Exception {
 	   
-	        request.setAttribute("name", "this is a nice producor");
+	        request.setAttribute("introduce", "this is a nice producor");
 	        //request.setAttribute("id", "helloWord");
 	         
 	        return "products/info";

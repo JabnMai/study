@@ -16,7 +16,7 @@
     <mvc:annotation-driven />  
   
     <!-- 扫描包 -->  
-    <context:component-scan base-package="com.my.web.rest" />  
+    <context:component-scan base-package="com.my.web" />  
      
      <!-- 视图解析 -->  
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">  
