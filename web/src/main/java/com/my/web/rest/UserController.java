@@ -1,7 +1,10 @@
-package com.my.web.user.contorller;
+package com.my.web.rest;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.web.user.model.User;
 @Scope("prototype")
@@ -16,7 +20,6 @@ import com.my.web.user.model.User;
 @RequestMapping("/user")
 public class UserController {
 	private final static Map<String,User> users = new HashMap<String,User>();
-	
 	//模拟数据源,构造初始数据
 		public UserController(){
 			users.put("张起灵", new User("张起灵", "闷油瓶", "02200059", "menyouping@yeah.net"));
@@ -33,13 +36,15 @@ public class UserController {
 		 * @see 访问/user/add时，GET请求就执行addUser(Model model)方法，POST请求就执行addUser(User user)方法
 		 */
 		@RequestMapping(value="/add", method=RequestMethod.GET)
-		public String addUser(Model model){
+		public String addUser(Model model,HttpServletRequest request,HttpServletResponse response){
 			//这里要传给前台一个空对象，否则会报告java.lang.IllegalStateException异常
 			//异常信息为Neither BindingResult nor plain target object for bean name 'user' available as request attribute
 			//并且传过去的key值要与前台modelAttribute属性值相同，即model.addAttribute("user", new User());
 			//我们也可以写成下面这种方式，此时SpringMVC会自动把对象名转换为小写值作为key，即User-->user
 			model.addAttribute(new User());
+			System.out.println("add............");
 			return "user/add";
+			
 		}
 		@RequestMapping(value="/add", method=RequestMethod.POST)
 		public String addUser(User user){ //这里参数中的user就应该与add.jsp中的modelAttribute="user"一致了
@@ -51,8 +56,9 @@ public class UserController {
 		 * 列出所有用户信息
 		 */
 		@RequestMapping("/list")
-		public String list(Model model){
+		public @ResponseBody String list(Model model){
 			model.addAttribute("users", users);
+			System.out.println("list............");
 			return "user/list";
 		}
 		
@@ -92,4 +98,17 @@ public class UserController {
 			return "redirect:/user/list"; //删除完成后显示当前存在的所有用户信息
 		}
 		
+		@RequestMapping(value="/print",method=RequestMethod.GET)
+	    public String getPrintInfo() {
+			System.out.println("张起灵 : "+users.get("张起灵").getNickname());
+			return null;
+	        
+	    }
+		
+		@RequestMapping(value="/printjson",method=RequestMethod.GET)
+	    public @ResponseBody User returnJson() {
+			//System.out.println("张起灵 : "+users.get("张起灵").getNickname());
+			return users.get("张起灵");
+	        
+	    }
 }

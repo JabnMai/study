@@ -31,4 +31,12 @@ public class MyFirstRest {
 	        return "products/info";
 	         
 	    }
+	 @RequestMapping(value="/test",method=RequestMethod.GET)
+	    public String getProductsTest() throws Exception {
+	   
+	        //request.setAttribute("id", "helloWord");
+	         
+	        return "products/info";
+	         
+	    }
 }
